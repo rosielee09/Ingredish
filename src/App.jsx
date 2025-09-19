@@ -2,6 +2,7 @@ import { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { IngredientInput } from "./components/IngredientInput";
 import { RecipeList } from "./components/RecipeList";
+import Navigation from "./components/Navigation";
 
 function App() {
   const [ingredients, setIngredients] = useState([]);
@@ -11,28 +12,23 @@ function App() {
   };
 
   return (
-    <>
-      <Router>
-        <Routes>
-          <h1 style={{ color: "red", position: "relative", zIndex: 1000 }}>
-            IngreDish
-          </h1>
-          <Route
-            path="/"
-            element={
-              <IngredientInput
-                onIngredientsChange={handleIngredientsChange}
-                onSearchRecipes={() => console.log("Search recipes")}
-              />
-            }
-          />
-          <Route
-            path="/recipes"
-            element={<RecipeList ingredients={ingredients} />}
-          />
-        </Routes>
-      </Router>
-    </>
+    <Router>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <IngredientInput
+              onIngredientsChange={handleIngredientsChange}
+              onSearchRecipes={() => console.log("Search recipes")}
+            />
+          }
+        />
+        <Route
+          path="/recipes"
+          element={<RecipeList ingredients={ingredients} />}
+        />
+      </Routes>
+    </Router>
   );
 }
 
