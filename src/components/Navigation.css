@@ -1,39 +1,40 @@
 .nav {
-  background-color: #710000; /* deep red background */
-  padding: 0.75rem 1.5rem;
-
-  /* ensure full-width top bar */
-  width: 100%;
-  position: fixed; /* stay at top even when scrolling */
+  position: fixed;
   top: 0;
   left: 0;
-  z-index: 1000; /* sit above page content */
+  width: 100%;
+  background: #115005;
+  z-index: 1000;
 }
 
-/* make sure page content starts below the fixed bar */
-body {
-  padding-top: 3.5rem; /* roughly matches nav height */
-}
-
-.nav ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0.75rem 1.5rem;
 
   display: flex;
-  justify-content: center;
-  gap: 2rem;
+  align-items: center;
+}
 
-  /* so links stay centered and don’t overflow */
+.menu {
+  margin: 0 0 0 auto;
+  padding: 0;
+  list-style: none;
+
+  display: flex;
+  gap: 2rem;
   flex-wrap: wrap;
 }
 
-.nav li {
-  display: inline;
+.brand {
+  color: #fff;
+  font-weight: 800;
+  font-size: 1.4rem;
+  letter-spacing: 0.03em;
 }
 
-.nav a {
-  color: #ffffff;
+.menu a {
+  color: #fff;
   text-decoration: none;
   font-weight: 600;
   letter-spacing: 0.05em;
@@ -41,21 +42,29 @@ body {
   transition: color 0.2s ease, border-bottom 0.2s ease;
 }
 
-.nav a:hover {
+.menu a:hover {
   color: #ff9800;
   border-bottom: 2px solid #ff9800;
 }
 
-.nav a.active {
-  border-bottom: 2px solid #ffffff; /* highlight if using NavLink */
+.menu a.active {
+  border-bottom: 2px solid #fff;
 }
 
-/* optional: tweak spacing for very small screens */
+/* keep page content below fixed nav */
+body {
+  padding-top: 3.5rem;
+}
+
+/* small-screen tweaks */
 @media (max-width: 600px) {
-  .nav ul {
+  .nav-container {
+    padding: 0.6rem 1rem;
+  }
+  .menu {
     gap: 1rem;
   }
-  body {
-    padding-top: 4rem; /* slightly more if text wraps */
+  .brand {
+    font-size: 1.2rem;
   }
 }
