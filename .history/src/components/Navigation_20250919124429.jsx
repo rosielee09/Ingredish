@@ -10,6 +10,12 @@ export default function Navigation() {
         <li>
           <a href="#">Saved</a>
         </li>
+        <li>
+          <a href="#">Favorites</a>
+        </li>
+        <li>
+          <a href="#">About</a>
+        </li>
       </ul>
     </nav>
   );
