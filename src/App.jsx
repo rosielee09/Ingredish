@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { IngredientInput } from "./components/IngredientInput";
 import { searchRecipes } from "./lib/recipe-generator";
+import Navigation from "./components/Navigation";
+
 
 function App() {
   const [ingredients, setIngredients] = useState([]);
@@ -15,6 +17,7 @@ function App() {
     const results = await searchRecipes(ingredients);
     setRecipes(results);
   };
+
 
   return (
     <div>
