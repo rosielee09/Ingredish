@@ -8,38 +8,25 @@ function App() {
 
 	const handleIngredientsChange = (newIngredients) => {
 		setIngredients(newIngredients);
+
+		const handleSearchRecipes = () => {
+			console.log("Search recipes called with:", ingredients);
+		};
 	};
 
 	return (
-		<Router>
-			<Routes>
-				<Route
-					path='/'
-					element={
-						<IngredientInput
-							onIngredientsChange={
-								handleIngredientsChange
-							}
-							onSearchRecipes={() =>
-								console.log(
-									"Search recipes"
-								)
-							}
-						/>
-					}
-				/>
-				<Route
-					path='/recipes'
-					element={
-						<RecipeList
-							ingredients={
-								ingredients
-							}
-						/>
-					}
-				/>
-			</Routes>
-		</Router>
+		<div>
+			<h1 style={{ textAlign: "center" }}>
+				Hello Ingredish!
+			</h1>
+			<IngredientInput
+				onIngredientsChange={handleIngredientsChange}
+				onSearchRecipes={handleSearchRecipes}
+			/>
+			<p style={{ textAlign: "center" }}>
+				Ingredients entered: {ingredients.join(", ")}
+			</p>
+		</div>
 	);
 }
 
