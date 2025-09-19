@@ -1,13 +1,9 @@
 import { useState } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { IngredientInput } from "./components/IngredientInput";
-import { RecipeList } from "./components/RecipeList";
-import Navigation from "./components/Navigation";
 
 function App() {
-  const [ingredients, setIngredients] = useState([]);
+	const [ingredients, setIngredients] = useState([]);
 
-<<<<<<< HEAD
 	const handleIngredientsChange = (newIngredients) => {
 		setIngredients(newIngredients);
 
@@ -30,31 +26,6 @@ function App() {
 			</p>
 		</div>
 	);
-=======
-  const handleIngredientsChange = (newIngredients) => {
-    setIngredients(newIngredients);
-  };
-
-  return (
-    <Router>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <IngredientInput
-              onIngredientsChange={handleIngredientsChange}
-              onSearchRecipes={() => console.log("Search recipes")}
-            />
-          }
-        />
-        <Route
-          path="/recipes"
-          element={<RecipeList ingredients={ingredients} />}
-        />
-      </Routes>
-    </Router>
-  );
->>>>>>> deba07c23b9b365dabe3952aec55b0465da73f74
 }
 
 export default App;
