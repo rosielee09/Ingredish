@@ -7,30 +7,6 @@ import Navigation from "./components/Navigation";
 function App() {
   const [ingredients, setIngredients] = useState([]);
 
-<<<<<<< HEAD
-	const handleIngredientsChange = (newIngredients) => {
-		setIngredients(newIngredients);
-
-		const handleSearchRecipes = () => {
-			console.log("Search recipes called with:", ingredients);
-		};
-	};
-
-	return (
-		<div>
-			<h1 style={{ textAlign: "center" }}>
-				Hello Ingredish!
-			</h1>
-			<IngredientInput
-				onIngredientsChange={handleIngredientsChange}
-				onSearchRecipes={handleSearchRecipes}
-			/>
-			<p style={{ textAlign: "center" }}>
-				Ingredients entered: {ingredients.join(", ")}
-			</p>
-		</div>
-	);
-=======
   const handleIngredientsChange = (newIngredients) => {
     setIngredients(newIngredients);
   };
@@ -54,7 +30,6 @@ function App() {
       </Routes>
     </Router>
   );
->>>>>>> deba07c23b9b365dabe3952aec55b0465da73f74
 }
 
 export default App;
