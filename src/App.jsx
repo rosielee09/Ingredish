@@ -6,10 +6,10 @@ function App() {
 
 	const handleIngredientsChange = (newIngredients) => {
 		setIngredients(newIngredients);
+	};
 
-		const handleSearchRecipes = () => {
-			console.log("Search recipes called with:", ingredients);
-		};
+	const handleSearchRecipes = () => {
+		console.log("Search recipes called with:", ingredients);
 	};
 
 	return (
@@ -27,5 +27,5 @@ function App() {
 		</div>
 	);
 }
-
+q;
 export default App;
