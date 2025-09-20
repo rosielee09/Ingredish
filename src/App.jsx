@@ -2,6 +2,7 @@ import { useState } from "react";
 import { IngredientInput } from "./components/IngredientInput";
 import { searchRecipes } from "./lib/recipe-generator";
 import Navigation from "./components/Navigation";
+import RecipeCard from "./components/RecipeCard";
 
 
 function App() {
@@ -19,17 +20,24 @@ function App() {
   };
 
 
-  return (
-    <div>
-      <h1 style={{ textAlign: "center" }}>Hello Ingredish!</h1>
-      <IngredientInput
-        onIngredientsChange={handleIngredientsChange}
-        onSearchRecipes={handleSearchRecipes}
-      />
-      <p style={{ textAlign: "center" }}>
-        Ingredients entered: {ingredients.join(", ")}
-      </p>
+	//for testing purposes
+	const sampleRecipe = {
+		title: "Juicy Burger",
+		description: "A delicious homemade burger with fresh ingredients.",
+		url: "https://example.com/burger-recipe",
+		image: "/burger.jpg"
+	  };
 
+	  return (
+		<div>
+		  <h1 style={{ textAlign: "center" }}>Hello Ingredish!</h1>
+		  <IngredientInput
+			onIngredientsChange={handleIngredientsChange}
+			onSearchRecipes={handleSearchRecipes}
+		  />
+		  <p style={{ textAlign: "center" }}>
+			Ingredients entered: {ingredients.join(", ")}
+		  </p>
       <div style={{ marginTop: "20px" }}>
         {recipes.length > 0 ? (
           <ul>
@@ -56,8 +64,12 @@ function App() {
           <p style={{ textAlign: "center" }}>
             No recipes found yet. Try entering some ingredients!
           </p>
+
         )}
-      </div>
+		 <div className="recipe-list">
+		<RecipeCard recipe={sampleRecipe} />
+	 	</div>
+	  </div>
     </div>
   );
 }
