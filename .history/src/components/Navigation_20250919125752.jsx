@@ -5,15 +5,15 @@ export default function Navigation() {
     <nav className="nav">
       <div className="nav-container">
         <div className="brand">Ingredish</div>
-        <ul className="menu">
-          <li>
-            <a href="#">Home</a>
-          </li>
-          <li>
-            <a href="#">Saved</a>
-          </li>
-        </ul>
       </div>
+      <ul>
+        <li>
+          <a href="#">Home</a>
+        </li>
+        <li>
+          <a href="#">Saved</a>
+        </li>
+      </ul>
     </nav>
   );
 }
