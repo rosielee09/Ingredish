@@ -4,7 +4,6 @@ import { searchRecipes } from "./lib/recipe-generator";
 import Navigation from "./components/Navigation";
 import RecipeCard from "./components/RecipeCard";
 
-
 function App() {
   const [ingredients, setIngredients] = useState([]);
   const [recipes, setRecipes] = useState([]);
@@ -20,56 +19,37 @@ function App() {
   };
 
 
-	//for testing purposes
-	const sampleRecipe = {
-		title: "Juicy Burger",
-		description: "A delicious homemade burger with fresh ingredients.",
-		url: "https://example.com/burger-recipe",
-		image: "/burger.jpg"
-	  };
+  return (
+    <div>
+      <h1 style={{ textAlign: "center" }}>Hello Ingredish!</h1>
+      <IngredientInput
+        onIngredientsChange={handleIngredientsChange}
+        onSearchRecipes={handleSearchRecipes}
+      />
 
-	  return (
-		<div>
-		  <h1 style={{ textAlign: "center" }}>Hello Ingredish!</h1>
-		  <IngredientInput
-			onIngredientsChange={handleIngredientsChange}
-			onSearchRecipes={handleSearchRecipes}
-		  />
-		  <p style={{ textAlign: "center" }}>
-			Ingredients entered: {ingredients.join(", ")}
-		  </p>
+	 {/* For test purpose  */}
+      <div style={{ textAlign: "center", marginTop: "10px" }}>
+        <button onClick={handleSearchRecipes}>Find Recipes</button>
+      </div>
+
+
+      <p style={{ textAlign: "center" }}>
+        Ingredients entered: {ingredients.join(", ")}
+      </p>
+	  
       <div style={{ marginTop: "20px" }}>
         {recipes.length > 0 ? (
-          <ul>
+          <div className="recipe-list">
             {recipes.map((recipe) => (
-              <li key={recipe.id}>
-                <h3>{recipe.title}</h3>
-                <p>{recipe.description}</p>
-                <strong>Ingredients:</strong>
-                <ul>
-                  {recipe.ingredients.map((ing, i) => (
-                    <li key={i}>{ing}</li>
-                  ))}
-                </ul>
-                <strong>Instructions:</strong>
-                <ol>
-                  {recipe.instructions.map((step, i) => (
-                    <li key={i}>{step}</li>
-                  ))}
-                </ol>
-              </li>
+              <RecipeCard key={recipe.id} recipe={recipe} />
             ))}
-          </ul>
+          </div>
         ) : (
           <p style={{ textAlign: "center" }}>
             No recipes found yet. Try entering some ingredients!
           </p>
-
         )}
-		 <div className="recipe-list">
-		<RecipeCard recipe={sampleRecipe} />
-	 	</div>
-	  </div>
+      </div>
     </div>
   );
 }
