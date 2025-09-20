@@ -21,16 +21,12 @@ function App() {
 
 
 	//for testing purposes
-	// const sampleRecipe = {
-	// 	title: "Juicy Burger",
-	// 	description: "A delicious homemade burger with fresh ingredients.",
-	// 	url: "https://example.com/burger-recipe",
-	// 	image: "/burger.jpg"
-	//   };
-
-	// <div className="recipe-list">
-	// <RecipeCard recipe={sampleRecipe} />
-	// </div>
+	const sampleRecipe = {
+		title: "Juicy Burger",
+		description: "A delicious homemade burger with fresh ingredients.",
+		url: "https://example.com/burger-recipe",
+		image: "/burger.jpg"
+	  };
 
 	  return (
 		<div>
@@ -70,6 +66,9 @@ function App() {
           </p>
 
         )}
+		 <div className="recipe-list">
+		<RecipeCard recipe={sampleRecipe} />
+	 	</div>
 	  </div>
     </div>
   );
