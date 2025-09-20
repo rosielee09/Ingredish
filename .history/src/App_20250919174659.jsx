@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { IngredientInput } from "./components/IngredientInput";
 import { searchRecipes } from "./lib/recipe-generator";
-import Navigation from "./components/Navigation";
+import { Navigation } from "./components/Navigation";
 
 function App() {
   const [ingredients, setIngredients] = useState([]);
@@ -19,7 +19,6 @@ function App() {
 
   return (
     <div>
-      <Navigation />
       <h1 style={{ textAlign: "center" }}>Hello Ingredish!</h1>
       <IngredientInput
         onIngredientsChange={handleIngredientsChange}
