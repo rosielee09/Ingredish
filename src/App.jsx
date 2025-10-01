@@ -73,16 +73,6 @@ function Home() {
 				</button>
 			</div>
 
-<<<<<<< HEAD
-      <p style={{ textAlign: "center" }}>
-        Ingredients entered:{" "}
-        {ingredients.map((i) => (
-          <span key={i} style={{ marginRight: "5px" }}>
-            {i} <button onClick={() => handleRemoveIngredient(i)}>x</button>
-          </span>
-        ))}
-      </p>
-=======
 			<p style={{ textAlign: "center" }}>
 				Ingredients entered:{" "}
 				{ingredients.map((i) => (
@@ -103,7 +93,6 @@ function Home() {
 					</span>
 				))}
 			</p>
->>>>>>> fa6e78951c6643cb924de87c1f4dace0002a207e
 
 			<div className='recipe-list'>
 				{recipes.length > 0 ? (
