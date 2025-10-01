@@ -8,32 +8,43 @@
 	align-items: center;
 }
 
-/* Ingredient input & button container */
-.ingredient-input-container,
-div button {
+.ingredient-input-container {
+	display: flex;
+	flex-direction: row;
+	gap: 0.5rem;
 	width: 100%;
 	max-width: 500px;
-	box-sizing: border-box;
-	margin: 0.5rem auto;
+	margin: 1rem auto;
 }
 
-/* Input Field */
 .ingredient-input-container input {
-	width: 100%;
+	flex: 1;
 	padding: 0.8rem 1rem;
 	font-size: 1rem;
 	border-radius: 8px;
 	border: 1px solid #444;
 	background-color: #1a1a1a;
 	color: #fff;
-	box-sizing: border-box;
-	transition: border-color 0.25s, background-color 0.25s;
 }
 
 .ingredient-input-container input:focus {
 	outline: none;
 	border-color: #646cff;
 	box-shadow: 0 0 5px #646cff77;
+}
+
+.ingredient-input-container button {
+	padding: 0.8rem 1rem;
+	border-radius: 8px;
+	border: 1px solid transparent;
+	background-color: #1a1a1a;
+	color: #fff;
+	cursor: pointer;
+	transition: border-color 0.25s;
+}
+
+.ingredient-input-container button:hover {
+	border-color: #646cff;
 }
 
 /* Recipe list container */
@@ -98,8 +109,11 @@ button {
 	button {
 		max-width: 100%;
 	}
-}
+	.ingredient-input-container {
+		flex-direction: column;
+	}
 
-.read-the-docs {
-	color: #888;
+	.ingredient-input-container button {
+		width: 100%;
+	}
 }
