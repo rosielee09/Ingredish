@@ -17,7 +17,7 @@ export default function Navigation() {
             <Link to="/">Home</Link>
           </li>
           <li>
-            <Link to="/saved">My Saved Recipes</Link>
+            <Link to="/saved">Saved</Link>
           </li>
         </ul>
       </div>

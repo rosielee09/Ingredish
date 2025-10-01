@@ -3,7 +3,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  background: #f8fff6;
+  background: #0d4301;
   z-index: 1000;
 }
 
@@ -34,7 +34,7 @@
 }
 
 .menu a {
-  color: #008700;
+  color: #fff;
   text-decoration: none;
   font-weight: 600;
   letter-spacing: 0.05em;
