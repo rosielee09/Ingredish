@@ -15,9 +15,11 @@ function convertMealDBToRecipe(
 
   // Split instructions into steps
   const instructions = mealDBRecipe.strInstructions
+  ? mealDBRecipe.strInstructions
     .split(/\r?\n/)
     .filter((step) => step.trim().length > 0)
-    .map((step) => step.trim());
+    .map((step) => step.trim())
+    :[];
 
   return {
     id: mealDBRecipe.idMeal,
@@ -27,6 +29,8 @@ function convertMealDBToRecipe(
     difficulty: "Medium",
     ingredients,
     instructions,
+    image: mealDBRecipe.strMealThumb,
+    url: mealDBRecipe.strSource || "",
     matchedIngredients,
     missingIngredients,
   };
