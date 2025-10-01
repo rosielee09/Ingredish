@@ -9,8 +9,8 @@ function App() {
 	const [ingredients, setIngredients] = useState([]);
 	const [recipes, setRecipes] = useState([]);
 
-	const handleIngredientsChange = (newIngredients) => {
-		setIngredients(newIngredients);
+	const handleIngredientsChange = (newIngredient) => {
+		setIngredients((prev) => [...prev, ...newIngredient]);
 	};
 
 	const handleSearchRecipes = async () => {
