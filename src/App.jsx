@@ -2,10 +2,7 @@ import { useState } from "react";
 import { IngredientInput } from "./components/IngredientInput";
 import { searchRecipes } from "./lib/recipe-generator";
 import Navigation from "./components/Navigation";
-<<<<<<< HEAD
-=======
 import RecipeCard from "./components/RecipeCard";
->>>>>>> b9fae827645d82b6301f92a8046970b944f3be41
 
 function App() {
   const [ingredients, setIngredients] = useState([]);
