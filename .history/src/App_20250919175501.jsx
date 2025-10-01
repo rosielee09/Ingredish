@@ -2,10 +2,6 @@ import { useState } from "react";
 import { IngredientInput } from "./components/IngredientInput";
 import { searchRecipes } from "./lib/recipe-generator";
 import Navigation from "./components/Navigation";
-<<<<<<< HEAD
-=======
-import RecipeCard from "./components/RecipeCard";
->>>>>>> b9fae827645d82b6301f92a8046970b944f3be41
 
 function App() {
   const [ingredients, setIngredients] = useState([]);
@@ -29,24 +25,32 @@ function App() {
         onIngredientsChange={handleIngredientsChange}
         onSearchRecipes={handleSearchRecipes}
       />
-
-	 {/* For test purpose  */}
-      <div style={{ textAlign: "center", marginTop: "10px" }}>
-        <button onClick={handleSearchRecipes}>Find Recipes</button>
-      </div>
-
-
       <p style={{ textAlign: "center" }}>
         Ingredients entered: {ingredients.join(", ")}
       </p>
-	  
+
       <div style={{ marginTop: "20px" }}>
         {recipes.length > 0 ? (
-          <div className="recipe-list">
+          <ul>
             {recipes.map((recipe) => (
-              <RecipeCard key={recipe.id} recipe={recipe} />
+              <li key={recipe.id}>
+                <h3>{recipe.title}</h3>
+                <p>{recipe.description}</p>
+                <strong>Ingredients:</strong>
+                <ul>
+                  {recipe.ingredients.map((ing, i) => (
+                    <li key={i}>{ing}</li>
+                  ))}
+                </ul>
+                <strong>Instructions:</strong>
+                <ol>
+                  {recipe.instructions.map((step, i) => (
+                    <li key={i}>{step}</li>
+                  ))}
+                </ol>
+              </li>
             ))}
-          </div>
+          </ul>
         ) : (
           <p style={{ textAlign: "center" }}>
             No recipes found yet. Try entering some ingredients!
