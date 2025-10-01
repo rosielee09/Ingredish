@@ -1,9 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import "./RecipeCard.css";
 
 function RecipeCard({ recipe }) {
+
+  const [saved, setSaved] = useState(false);
+
+  const toggleSave = () => {
+    setSaved(!saved);
+  };
+
+
     return (
       <div className="recipe-card">
+
+      <button className="save-btn" onClick={toggleSave}>
+        {saved ? "❤️" : "🤍"}
+      </button>
+
         {recipe.image && (
           <img className="recipe-image" src={recipe.image} alt={recipe.title} />
         )}
