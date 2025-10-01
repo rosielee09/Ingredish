@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { Routes, Route } from "react-router-dom";
 import { IngredientInput } from "./components/IngredientInput";
 import { searchRecipes } from "./lib/recipe-generator";
 import Navigation from "./components/Navigation";
 import RecipeCard from "./components/RecipeCard";
+import { Routes, Route } from "react-router-dom";
 import Saved from "./saved.jsx";
 
-function Home() {
+function App() {
   const [ingredients, setIngredients] = useState([]);
   const [recipes, setRecipes] = useState([]);
 
@@ -22,13 +22,14 @@ function Home() {
 
   return (
     <div>
+      <Navigation />
       <h1 style={{ textAlign: "center" }}>Hello Ingredish!</h1>
       <IngredientInput
         onIngredientsChange={handleIngredientsChange}
         onSearchRecipes={handleSearchRecipes}
       />
 
-      {/* For test purpose */}
+      {/* For test purpose  */}
       <div style={{ textAlign: "center", marginTop: "10px" }}>
         <button onClick={handleSearchRecipes}>Find Recipes</button>
       </div>
@@ -50,18 +51,6 @@ function Home() {
           </p>
         )}
       </div>
-    </div>
-  );
-}
-
-function App() {
-  return (
-    <div>
-      <Navigation />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/saved" element={<Saved />} />
-      </Routes>
     </div>
   );
 }
