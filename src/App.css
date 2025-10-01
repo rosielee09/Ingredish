@@ -17,10 +17,29 @@ div button {
 	margin: 0.5rem auto;
 }
 
+/* Input Field */
+.ingredient-input-container input {
+	width: 100%;
+	padding: 0.8rem 1rem;
+	font-size: 1rem;
+	border-radius: 8px;
+	border: 1px solid #444;
+	background-color: #1a1a1a;
+	color: #fff;
+	box-sizing: border-box;
+	transition: border-color 0.25s, background-color 0.25s;
+}
+
+.ingredient-input-container input:focus {
+	outline: none;
+	border-color: #646cff;
+	box-shadow: 0 0 5px #646cff77;
+}
+
 /* Recipe list container */
 .recipe-list {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+	grid-template-columns: repeat(3, 1fr);
 	gap: 1rem;
 	padding: 1rem;
 }
