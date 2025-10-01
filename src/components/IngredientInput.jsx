@@ -1,28 +1,29 @@
-import { useState } from "react";
+import React from "react";
 
-export function IngredientInput({ onIngredientsChange, onSearchRecipes }) {
-	const [ingredient, setIngredient] = useState("");
+export function IngredientInput({ value, onChange, onAddIngredient }) {
+	const handleKeyDown = (e) => {
+		if (e.key === "Enter") {
+			e.preventDefault();
+			if (value.trim()) onAddIngredient(value.trim());
+		}
+	};
 
 	return (
-		<div style={{ padding: "20px", textAlign: "center" }}>
-			<h2>Ingredient Input Component</h2>
+		<div className='ingredient-input-container'>
 			<input
 				type='text'
 				placeholder='Enter ingredient'
-				value={ingredient}
-				onChange={(e) => setIngredient(e.target.value)}
+				value={value}
+				onChange={(e) => onChange(e.target.value)}
+				onKeyDown={handleKeyDown}
 			/>
 			<button
-				onClick={() => {
-					if (ingredient.trim()) {
-						onIngredientsChange([
-							ingredient,
-						]);
-						onSearchRecipes();
-					}
-				}}
+				onClick={() =>
+					value.trim() &&
+					onAddIngredient(value.trim())
+				}
 			>
-				Add
+				+ Add Ingredient
 			</button>
 		</div>
 	);
