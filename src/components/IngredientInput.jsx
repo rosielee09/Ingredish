@@ -1,23 +1,10 @@
-import { useState } from "react";
+import React from "react";
 
-export function IngredientInput({ onIngredientsChange, onSearchRecipes }) {
-	const [ingredient, setIngredient] = useState("");
-
-	const handleAdd = () => {
-		if (!ingredient.trim()) return;
-
-		// Append the new ingredient to the existing list
-		onIngredientsChange((prev) => [...prev, ingredient.trim()]);
-
-		onSearchRecipes();
-
-		setIngredient("");
-	};
-
-	// Handle pressing Enter in the input field
-	const handleKeyPress = (e) => {
+export function IngredientInput({ value, onChange, onAddIngredient }) {
+	const handleKeyDown = (e) => {
 		if (e.key === "Enter") {
-			handleAdd();
+			e.preventDefault();
+			if (value.trim()) onAddIngredient(value.trim());
 		}
 	};
 
@@ -26,11 +13,18 @@ export function IngredientInput({ onIngredientsChange, onSearchRecipes }) {
 			<input
 				type='text'
 				placeholder='Enter ingredient'
-				value={ingredient}
-				onChange={(e) => setIngredient(e.target.value)}
-				onKeyDown={handleKeyPress}
+				value={value}
+				onChange={(e) => onChange(e.target.value)}
+				onKeyDown={handleKeyDown}
 			/>
-			<button onClick={handleAdd}>+ Add Ingredient</button>
+			<button
+				onClick={() =>
+					value.trim() &&
+					onAddIngredient(value.trim())
+				}
+			>
+				+ Add Ingredient
+			</button>
 		</div>
 	);
 }
