@@ -6,8 +6,6 @@ import Navigation from "./components/Navigation";
 import RecipeCard from "./components/RecipeCard";
 import Saved from "./saved.jsx";
 
-
-
 function Home() {
   const [ingredients, setIngredients] = useState([]);
   const [recipes, setRecipes] = useState([]);
@@ -30,11 +28,7 @@ function Home() {
         onSearchRecipes={handleSearchRecipes}
       />
 
-<<<<<<< HEAD
-      {/* For test purpose  */}
-=======
       {/* For test purpose */}
->>>>>>> baaeb1e6d56acddbba3b7c4cce6c91fa8f885c60
       <div style={{ textAlign: "center", marginTop: "10px" }}>
         <button onClick={handleSearchRecipes}>Find Recipes</button>
       </div>

@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import "./Navigation.css";
 
 export default function Navigation() {
@@ -8,14 +7,10 @@ export default function Navigation() {
         <div className="brand">Ingredish</div>
         <ul className="menu">
           <li>
-            <Link to="/">Home</Link>
+            <a href="#">Home</a>
           </li>
           <li>
-<<<<<<< HEAD
-            <a href="#">My Recipes</a>
-=======
             <Link to="/saved">Saved</Link>
->>>>>>> baaeb1e6d56acddbba3b7c4cce6c91fa8f885c60
           </li>
         </ul>
       </div>

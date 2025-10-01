@@ -11,11 +11,7 @@ export default function Navigation() {
             <Link to="/">Home</Link>
           </li>
           <li>
-<<<<<<< HEAD
-            <a href="#">My Recipes</a>
-=======
             <Link to="/saved">Saved</Link>
->>>>>>> baaeb1e6d56acddbba3b7c4cce6c91fa8f885c60
           </li>
         </ul>
       </div>
