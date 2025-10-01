@@ -6,8 +6,6 @@ import Navigation from "./components/Navigation";
 import RecipeCard from "./components/RecipeCard";
 import Saved from "./saved.jsx";
 
-
-
 function Home() {
   const [ingredients, setIngredients] = useState([]);
   const [recipes, setRecipes] = useState([]);
