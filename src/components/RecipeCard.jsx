@@ -1,12 +1,18 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./RecipeCard.css";
 
 function RecipeCard({ recipe }) {
 
   const [saved, setSaved] = useState(false);
+  const navigate = useNavigate();
+
 
   const toggleSave = () => {
     setSaved(!saved);
+    if (!saved) {
+      navigate("/saves", { state: { recipe } });
+    }
   };
 
 
