@@ -6,6 +6,7 @@ import RecipeCard from "./components/RecipeCard";
 import Saved from "./saved.jsx";
 import { searchRecipes } from "./lib/recipe-generator"; // your real data
 import "./App.css";
+import FoodBackground from "./components/FoodBackground";
 
 function Home() {
   const [ingredients, setIngredients] = useState([]);
@@ -84,6 +85,9 @@ function Home() {
           </p>
         )}
       </div>
+      <div>
+        <FoodBackground />
+      </div>
     </div>
   );
 }
@@ -99,5 +103,4 @@ function App() {
     </div>
   );
 }
-
 export default App;
