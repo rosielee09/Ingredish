@@ -4,8 +4,8 @@ import { IngredientInput } from "./components/IngredientInput";
 import Navigation from "./components/Navigation";
 import RecipeCard from "./components/RecipeCard";
 import Saved from "./saved.jsx";
-import { searchRecipes } from "./lib/recipe-generator"; // your real data
-import "./App.css";
+import { searchRecipes } from "./lib/recipe-generator"; 
+
 
 function Home() {
 	const [ingredients, setIngredients] = useState([]);
@@ -42,16 +42,31 @@ function Home() {
 					"searchRecipes did not return an array:",
 					results
 				);
-				setRecipes([]);
+				// Show error card when no valid results
+				setRecipes([{ id: "error", isError: true }]);
 				return;
 			}
 
-			setRecipes(results);
+			// Filter out recipes with no ingredients and show error card
+			if (results.length === 0) {
+				setRecipes([{ id: "error", isError: true }]);
+				return;
+			}
+
+			// Check if any recipe has no ingredients
+			const validRecipes = results.filter(
+				(recipe) => recipe.ingredients && recipe.ingredients.length > 0
+			);
+
+			if (validRecipes.length === 0) {
+				setRecipes([{ id: "error", isError: true }]);
+			} else {
+				setRecipes(validRecipes);
+			}
 		} catch (error) {
 			console.error("Error searching recipes:", error);
-			alert(
-				"Failed to fetch recipes. See console for details."
-			);
+			// Show error card instead of alert
+			setRecipes([{ id: "error", isError: true }]);
 		}
 	};
 
@@ -100,6 +115,7 @@ function Home() {
 						<RecipeCard
 							key={recipe.id}
 							recipe={recipe}
+							isError={recipe.isError}
 						/>
 					))
 				) : (
