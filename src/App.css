@@ -283,3 +283,60 @@
 
 /* Refresh button (clears inputs) */
 /* Refresh button removed */
+
+/* Modern gradient button style */
+.modern-btn {
+	background: rgb(45, 44, 44);
+	border: none;
+	color: white;
+	transition: all 0.3s ease;
+}
+
+.modern-btn:hover {
+	background: grey;
+	transform: translateY(-1px);
+	box-shadow: 0 4px 12px rgba(100, 100, 255, 0.3);
+}
+
+/* Input group refinement */
+.modern-input input {
+	border: 1px solid #ddd !important;
+}
+.modern-input input:focus {
+	box-shadow: 0 0 0 0.25rem rgba(100, 149, 237, 0.25);
+	border-color: #6a5acd !important;
+}
+
+/* Modern ingredient badge */
+.ingredient-badge {
+	background: linear-gradient(135deg, #e0eaff, #f7f8ff);
+	color: #333;
+	border: 1px solid #d0d8f0;
+	font-weight: 500;
+	margin: 3px;
+	padding: 8px 12px;
+}
+
+/* Small remove button inside badge */
+.remove-btn {
+	color: #666;
+	text-decoration: none;
+	font-weight: bold;
+	padding: 0 4px;
+}
+.remove-btn:hover {
+	color: #000;
+}
+
+/* Modal with soft shadows */
+.modern-modal {
+	border-radius: 16px;
+	box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Title gradient */
+.gradient-text {
+	background: linear-gradient(90deg, #48c6ef, #6a5acd);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}

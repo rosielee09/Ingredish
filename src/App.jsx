@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
-import { IngredientInput } from "./components/IngredientInput";
 import Navigation from "./components/Navigation";
 import RecipeCard from "./components/RecipeCard";
 import Saved from "./saved.jsx";
@@ -8,7 +7,18 @@ import {
 	searchRecipes,
 	searchRecipesByIngredient,
 } from "./lib/recipe-generator";
-import SearchIcon from "./components/icons/SearchIcon";
+import {
+	Container,
+	Form,
+	InputGroup,
+	Button,
+	Badge,
+	Modal,
+	Spinner,
+	Row,
+	Col,
+} from "react-bootstrap";
+import { Search } from "react-bootstrap-icons";
 import "./App.css";
 
 function Home() {
@@ -19,8 +29,12 @@ function Home() {
 	const [validating, setValidating] = useState(false);
 	const [error, setError] = useState(null);
 	const [inputError, setInputError] = useState(null);
+	const [showErrorModal, setShowErrorModal] = useState(false);
 
-	const handleClearError = () => setError(null);
+	const handleClearError = () => {
+		setError(null);
+		setShowErrorModal(false);
+	};
 
 	const handleSearchRecipes = async (ingredientList) => {
 		const list = Array.isArray(ingredientList)
@@ -58,6 +72,7 @@ function Home() {
 				(err && err.message) ||
 					"Failed to fetch recipes. Please try again."
 			);
+			setShowErrorModal(true);
 			setRecipes([]);
 		} finally {
 			setLoading(false);
@@ -141,6 +156,7 @@ function Home() {
 				(err && err.message) ||
 					"Failed to validate ingredient. Please try again."
 			);
+			setShowErrorModal(true);
 		} finally {
 			setValidating(false);
 		}
@@ -164,130 +180,113 @@ function Home() {
 	};
 
 	return (
-		<div>
-			<h1 style={{ textAlign: "center" }}>
+		<Container className='py-5 text-center'>
+			<h1 className='mb-4 fw-bold gradient-text'>
 				Hello Ingredish!
 			</h1>
 
-			<div
-				className='ingredient-input-container'
-				style={{ alignItems: "center" }}
-			>
-				<div
-					className='input-row'
-					style={{ width: "100%", maxWidth: 500 }}
-				>
-					<IngredientInput
-						value={inputValue}
-						onChange={(v) => {
-							setInputValue(v);
-							setInputError(null);
-						}}
-						onAddIngredient={
-							handleAddIngredient
-						}
-						disabled={loading || validating}
-					/>
-					<button
-						onClick={() =>
-							handleSearchRecipes()
-						}
-						disabled={
-							loading ||
-							ingredients.length === 0
-						}
-						className='search-button'
-						aria-label='Find recipes'
-					>
-						{loading || validating ? (
-							"Searching..."
-						) : (
-							<SearchIcon
-								width={18}
-								height={18}
-								className='bi-search'
-							/>
-						)}
-					</button>
-				</div>
-			</div>
+			{/* --- Input + Search --- */}
+			<Row className='justify-content-center mb-3'>
+				<Col xs={12} md={8} lg={6}>
+					<InputGroup className='shadow-sm rounded-pill modern-input'>
+						<Form.Control
+							type='text'
+							placeholder='Enter an ingredient'
+							value={inputValue}
+							onChange={(e) => {
+								setInputValue(
+									e.target
+										.value
+								);
+								setInputError(
+									null
+								);
+							}}
+							disabled={
+								loading ||
+								validating
+							}
+							onKeyDown={(e) => {
+								if (
+									e.key ===
+									"Enter"
+								) {
+									e.preventDefault();
+									handleAddIngredient(
+										inputValue
+									);
+								}
+							}}
+							className='rounded-start-pill ps-4'
+						/>
+						<Button
+							onClick={() =>
+								handleSearchRecipes()
+							}
+							disabled={
+								loading ||
+								ingredients.length ===
+									0
+							}
+							className='rounded-end-pill modern-btn'
+						>
+							{loading ||
+							validating ? (
+								<Spinner
+									animation='border'
+									size='sm'
+								/>
+							) : (
+								<Search
+									size={
+										20
+									}
+								/>
+							)}
+						</Button>
+					</InputGroup>
+				</Col>
+			</Row>
 
+			{/* --- Helper or Error message --- */}
 			{inputError ? (
-				<div
-					className='input-error'
-					style={{
-						maxWidth: 500,
-						margin: "0 auto",
-					}}
-				>
+				<p className='text-danger small'>
 					{inputError}
-				</div>
+				</p>
 			) : (
-				<div
-					className='input-helper'
-					style={{
-						maxWidth: 500,
-						margin: "0 auto",
-					}}
-				>
+				<p className='text-muted small'>
 					Enter one ingredient at a time. Press
 					Enter to add.
-				</div>
+				</p>
 			)}
 
-			{error && (
-				<div
-					className='error-modal'
-					role='alertdialog'
-					aria-modal='true'
-				>
-					<div className='error-modal-content'>
-						<p>{error}</p>
-						<div className='error-actions'>
-							<button
-								className='retry'
-								onClick={
-									handleRetry
-								}
-							>
-								Retry
-							</button>
-							<button
-								className='close'
-								onClick={
-									handleClearError
-								}
-							>
-								Close
-							</button>
-						</div>
-					</div>
-				</div>
-			)}
-
-			<div className='ingredient-badges'>
+			{/* --- Ingredient Badges --- */}
+			<div className='my-3'>
 				{ingredients.map((i) => (
-					<span
+					<Badge
 						key={i}
-						className='ingredient-badge'
+						pill
+						className='ingredient-badge shadow-sm'
 					>
 						{i}
-						<button
-							className='remove-badge'
+						<Button
+							variant='link'
+							size='sm'
+							className='remove-btn ms-1'
 							onClick={() =>
 								handleRemoveIngredient(
 									i
 								)
 							}
 							disabled={loading}
-							aria-label={`Remove ${i}`}
 						>
-							x
-						</button>
-					</span>
+							×
+						</Button>
+					</Badge>
 				))}
 			</div>
 
+			{/* --- Recipes --- */}
 			<div className='recipe-list'>
 				{recipes.length > 0
 					? recipes.map((recipe) => (
@@ -302,12 +301,12 @@ function Home() {
 					: ingredients.length > 0 &&
 					  !loading &&
 					  !error && (
-							<div className='no-recipes-overlay'>
-								<h3>
+							<div className='mt-4'>
+								<h4>
 									No
 									recipes
 									found
-								</h3>
+								</h4>
 								<p>
 									We
 									couldn't
@@ -329,7 +328,34 @@ function Home() {
 							</div>
 					  )}
 			</div>
-		</div>
+
+			{/* --- Error Modal --- */}
+			<Modal
+				show={showErrorModal}
+				onHide={handleClearError}
+				centered
+				contentClassName='modern-modal'
+			>
+				<Modal.Header closeButton>
+					<Modal.Title>Error</Modal.Title>
+				</Modal.Header>
+				<Modal.Body>{error}</Modal.Body>
+				<Modal.Footer>
+					<Button
+						className='modern-btn'
+						onClick={handleRetry}
+					>
+						Retry
+					</Button>
+					<Button
+						variant='outline-secondary'
+						onClick={handleClearError}
+					>
+						Close
+					</Button>
+				</Modal.Footer>
+			</Modal>
+		</Container>
 	);
 }
 
