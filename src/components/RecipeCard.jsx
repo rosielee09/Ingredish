@@ -35,7 +35,7 @@ function RecipeCard({ recipe, isError = false }) {
         style={{
           border: "2px solid #008700",
           borderRadius: "12px",
-          backgroundColor: "#f8fff6",
+          backgroundColor: "#ffffff",
         }}
       >
         <Card.Body className="text-center d-flex flex-column align-items-center">
@@ -60,7 +60,7 @@ function RecipeCard({ recipe, isError = false }) {
       style={{
         border: "2px solid #008700",
         borderRadius: "12px",
-        backgroundColor: "#f8fff6",
+        backgroundColor: "#ffffff",
         position: "relative",
       }}
     >
@@ -94,7 +94,7 @@ function RecipeCard({ recipe, isError = false }) {
             onError={() => setImageError(true)}
             style={{
               width: "100%",
-              height: "150px",
+              height: "220px",
               borderRadius: "8px",
               objectFit: "cover",
               marginBottom: "10px",
