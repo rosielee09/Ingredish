@@ -5,7 +5,7 @@ import Navigation from "./components/Navigation";
 import RecipeCard from "./components/RecipeCard";
 import Saved from "./saved.jsx";
 import { searchRecipes } from "./lib/recipe-generator"; 
-
+import "./App.css";
 
 function Home() {
 	const [ingredients, setIngredients] = useState([]);
