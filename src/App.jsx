@@ -220,13 +220,22 @@ function Home() {
 							className='rounded-start-pill ps-4'
 						/>
 						<Button
-							onClick={() =>
-								handleSearchRecipes()
-							}
+							onClick={() => {
+								if (
+									inputValue.trim()
+								) {
+									handleAddIngredient(
+										inputValue
+									);
+								} else {
+									handleSearchRecipes();
+								}
+							}}
 							disabled={
 								loading ||
-								ingredients.length ===
-									0
+								(ingredients.length ===
+									0 &&
+									!inputValue)
 							}
 							className='rounded-end-pill modern-btn'
 						>
