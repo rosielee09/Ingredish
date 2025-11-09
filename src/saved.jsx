@@ -4,29 +4,33 @@ import RecipeCard from "./components/RecipeCard";
 import "./index.css";
 
 const LS_KEY = "savedRecipes";
-const FADE_MS = 250; // ต้องตรงกับ CSS transition
+const FADE_MS = 250; // Must match the CSS transition duration
 
 export default function Saved() {
   const [savedRecipes, setSavedRecipes] = useState([]);
   const [deletingIds, setDeletingIds] = useState(new Set());
 
+  // Load saved recipes from localStorage when the page is opened
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem(LS_KEY)) || [];
     setSavedRecipes(saved);
   }, []);
 
-  // เรียกจาก RecipeCard -> เริ่ม fade แล้วค่อยลบจริงหลัง 250ms
+  // Triggered when the user clicks the heart to unsave a recipe
+  // Adds the fade-out class first, then removes the recipe after the animation delay
   function handleUnsave(id) {
-    // mark ว่ากำลังลบ เพื่อใส่คลาส fade-out
+    // Mark this recipe as being deleted (for fade-out animation)
     setDeletingIds((prev) => new Set(prev).add(id));
 
-    // หน่วงเวลาให้อนิเมชันเล่นเสร็จ แล้วค่อยลบจริง
+    // Wait for fade-out animation to finish, then remove from state and localStorage
     setTimeout(() => {
       setSavedRecipes((prev) => {
         const next = prev.filter((r) => r.id !== id);
         localStorage.setItem(LS_KEY, JSON.stringify(next));
         return next;
       });
+
+      // Clean up the deleting state for this recipe ID
       setDeletingIds((prev) => {
         const next = new Set(prev);
         next.delete(id);
@@ -35,6 +39,7 @@ export default function Saved() {
     }, FADE_MS);
   }
 
+  // Display an empty state if there are no saved recipes
   if (savedRecipes.length === 0) {
     return (
       <div>
@@ -47,6 +52,7 @@ export default function Saved() {
     );
   }
 
+  // Display saved recipe cards
   return (
     <div>
       <Navigation />
@@ -59,7 +65,7 @@ export default function Saved() {
               key={recipe.id}
               recipe={recipe}
               onUnsave={handleUnsave}
-              isDeleting={deletingIds.has(recipe.id)} // ส่งสถานะกำลังลบ
+              isDeleting={deletingIds.has(recipe.id)} // Pass deleting state for fade-out effect
             />
           ))}
         </div>
