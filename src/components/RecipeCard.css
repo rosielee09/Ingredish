@@ -1,34 +1,45 @@
 /* Recipe list grid layout - responsive and full width */
 .recipe-list {
-    display: grid;
-    gap: 16px;
-    padding: 16px;
-    width: 100%;
-    box-sizing: border-box;
-    overflow-x: hidden; /* Prevent horizontal scrollbar */
+  display: grid;
+  gap: 16px;
+  padding: 16px;
+  width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden; /* Prevent horizontal scrollbar */
 }
 
 @media (max-width: 767px) {
-    .recipe-list {
-        grid-template-columns: repeat(2, 1fr);
-
-    }
+  .recipe-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 /* Desktop: 3 columns, centered grid container */
 @media (min-width: 768px) {
-    .recipe-list {
-        grid-template-columns: repeat(3, 1fr);
-    }
-    
-    .recipe-card {
-        max-width: calc(100% - 20px); /* Reduce card size by 10px on each side */
-    }
+  .recipe-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .recipe-card {
+    max-width: calc(100% - 20px); /* Reduce card size by 10px on each side */
+  }
 }
 
 /* Recipe card styling - responsive */
 .recipe-card {
-    width: 100%;
-    margin: 0 10px;
-    box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  box-sizing: border-box;
+  transition: opacity 250ms ease, transform 250ms ease, box-shadow 250ms ease;
+}
+
+.recipe-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+.recipe-card.fade-out {
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
 }

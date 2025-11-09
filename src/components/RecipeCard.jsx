@@ -3,13 +3,13 @@ import { Card, Button } from "react-bootstrap";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import "./RecipeCard.css";
 
-function RecipeCard({ recipe, isError = false }) {
+function RecipeCard({ recipe, isError = false, onUnsave, isDeleting = false }) {
   const [saved, setSaved] = useState(false);
   const [imageError, setImageError] = useState(false);
 
   useEffect(() => {
     const savedRecipes = JSON.parse(localStorage.getItem("savedRecipes")) || [];
-    const isSaved = savedRecipes.some((r) => r.id === recipe.id);
+    const isSaved = savedRecipes.some((r) => r.id === recipe?.id);
     setSaved(isSaved);
   }, [recipe]);
 
@@ -20,15 +20,24 @@ function RecipeCard({ recipe, isError = false }) {
       const updated = savedRecipes.filter((r) => r.id !== recipe.id);
       localStorage.setItem("savedRecipes", JSON.stringify(updated));
       setSaved(false);
+      // แจ้ง parent (หน้า Saved) ให้ลบการ์ดออกทันที
+      if (typeof onUnsave === "function") onUnsave(recipe.id);
     } else {
-      savedRecipes.push(recipe);
-      localStorage.setItem("savedRecipes", JSON.stringify(savedRecipes));
+      // กันการซ้ำ
+      const exists = savedRecipes.some((r) => r.id === recipe.id);
+      const next = exists ? savedRecipes : [...savedRecipes, recipe];
+      localStorage.setItem("savedRecipes", JSON.stringify(next));
       setSaved(true);
     }
   };
 
-  // Error card for recipes with no ingredients
-  if (isError || !recipe || !recipe.ingredients || recipe.ingredients.length === 0) {
+  // การ์ด error / ไม่มี ingredients
+  if (
+    isError ||
+    !recipe ||
+    !Array.isArray(recipe.ingredients) ||
+    recipe.ingredients.length === 0
+  ) {
     return (
       <Card
         className="recipe-card"
@@ -64,9 +73,13 @@ function RecipeCard({ recipe, isError = false }) {
         position: "relative",
       }}
     >
+      {/* ปุ่มหัวใจ */}
       <Button
         variant="link"
         onClick={toggleSave}
+        aria-pressed={saved}
+        aria-label={saved ? "Unsave recipe" : "Save recipe"}
+        title={saved ? "Unsave" : "Save"}
         style={{
           position: "absolute",
           top: "8px",
@@ -90,7 +103,7 @@ function RecipeCard({ recipe, isError = false }) {
           <Card.Img
             variant="top"
             src={recipe.image}
-            alt={recipe.title}
+            alt={recipe.title || "Recipe image"}
             onError={() => setImageError(true)}
             style={{
               width: "100%",
@@ -106,9 +119,11 @@ function RecipeCard({ recipe, isError = false }) {
           {recipe.title}
         </Card.Title>
 
-        <Card.Text style={{ color: "#333", textAlign: "center" }}>
-          {recipe.description}
-        </Card.Text>
+        {recipe.description && (
+          <Card.Text style={{ color: "#333", textAlign: "center" }}>
+            {recipe.description}
+          </Card.Text>
+        )}
 
         <Card.Subtitle
           style={{
@@ -119,9 +134,11 @@ function RecipeCard({ recipe, isError = false }) {
         >
           Ingredients:
         </Card.Subtitle>
-        <Card.Text style={{ color: "#333", textAlign: "center", width: "100%" }}>
-          {recipe.ingredients && recipe.ingredients.length > 0 
-            ? recipe.ingredients.join(", ") 
+        <Card.Text
+          style={{ color: "#333", textAlign: "center", width: "100%" }}
+        >
+          {Array.isArray(recipe.ingredients) && recipe.ingredients.length > 0
+            ? recipe.ingredients.map(String).join(", ")
             : "No ingredients listed"}
         </Card.Text>
 
@@ -134,13 +151,20 @@ function RecipeCard({ recipe, isError = false }) {
         >
           Instructions:
         </Card.Subtitle>
-        <ol style={{ width: "100%", paddingLeft: "20px" }}>
-          {recipe.instructions.map((step, idx) => (
-            <li key={idx} style={{ color: "#333", marginBottom: "5px" }}>
-              {step}
-            </li>
-          ))}
-        </ol>
+        {Array.isArray(recipe.instructions) &&
+        recipe.instructions.length > 0 ? (
+          <ol style={{ width: "100%", paddingLeft: "20px" }}>
+            {recipe.instructions.map((step, idx) => (
+              <li key={idx} style={{ color: "#333", marginBottom: "5px" }}>
+                {step}
+              </li>
+            ))}
+          </ol>
+        ) : (
+          <Card.Text style={{ color: "#333" }}>
+            No instructions provided
+          </Card.Text>
+        )}
 
         {recipe.url && (
           <Card.Link
