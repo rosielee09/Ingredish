@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import Navigation from "./components/Navigation";
 import RecipeCard from "./components/RecipeCard";
-import FoodBackground from "./components/FoodBackground";
 import Saved from "./saved.jsx";
 import {
   searchRecipes,
@@ -21,7 +20,7 @@ import {
 } from "react-bootstrap";
 import { Search } from "react-bootstrap-icons";
 import "./App.css";
-import logo from "./assets/Ingredish Logo.png";
+import FoodBackground from "./components/FoodBackground";
 
 function Home() {
   const [ingredients, setIngredients] = useState([]);
@@ -158,153 +157,120 @@ function Home() {
   };
 
   return (
-    <>
-      <div className="hero">
-        <FoodBackground />
-        <img src={logo} alt="Ingredish Logo" className="hero-logo" />
-        <div className="hero-content">
-          <h1 className="hero-title">Welcome to Ingredish!</h1>
-          <p className="hero-sub">
-            Find delicious recipes based on your ingredients
-          </p>
-        </div>
+    <Container className="py-5 text-center">
+      <h1 className="mb-4 fw-bold gradient-text">Hello Ingredish!</h1>
+
+      {/* --- Input + Search --- */}
+      <Row className="justify-content-center mb-3">
+        <Col xs={10} md={12} lg={12}>
+          <InputGroup className="shadow-sm rounded-pill modern-input">
+            <Form.Control
+              type="text"
+              placeholder="Enter an ingredient here"
+              value={inputValue}
+              onChange={(e) => {
+                setInputValue(e.target.value);
+                setInputError(null);
+              }}
+              disabled={loading || validating}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  handleAddIngredient(inputValue);
+                }
+              }}
+              className="rounded-start-pill ps-4"
+            />
+            <Button
+              onClick={() => {
+                if (inputValue.trim()) {
+                  handleAddIngredient(inputValue);
+                } else {
+                  handleSearchRecipes();
+                }
+              }}
+              disabled={loading || (ingredients.length === 0 && !inputValue)}
+              className="rounded-end-pill modern-btn"
+            >
+              {loading || validating ? (
+                <Spinner animation="border" size="sm" />
+              ) : (
+                <Search size={20} />
+              )}
+            </Button>
+          </InputGroup>
+        </Col>
+      </Row>
+
+      {/* --- Helper or Error message --- */}
+      {inputError ? (
+        <p className="text-danger small">{inputError}</p>
+      ) : (
+        <p className="text-muted small">
+          Enter one ingredient at a time. Press Enter to add.
+        </p>
+      )}
+
+      {/* --- Ingredient Badges --- */}
+      <div className="my-3">
+        {ingredients.map((i) => (
+          <Badge key={i} pill className="ingredient-badge shadow-sm">
+            {i}
+            <Button
+              variant="link"
+              size="sm"
+              className="remove-btn ms-1"
+              onClick={() => handleRemoveIngredient(i)}
+              disabled={loading}
+            >
+              ×
+            </Button>
+          </Badge>
+        ))}
       </div>
 
-      <Container
-        className="py-5 text-center"
-        style={{ backgroundColor: "transparent", maxWidth: "1280px" }}
-      >
-        <Row className="justify-content-center mb-3">
-          <Col xs={10} md={12} lg={12}>
-            <InputGroup className="shadow-sm rounded-pill modern-input">
-              <Form.Control
-                type="text"
-                placeholder="Enter an ingredient here"
-                value={inputValue}
-                onChange={(e) => {
-                  setInputValue(e.target.value);
-                  setInputError(null);
-                }}
-                disabled={loading || validating}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    e.preventDefault();
-                    handleAddIngredient(inputValue);
-                  }
-                }}
-                className="rounded-start-pill ps-4"
-              />
-              <Button
-                onClick={() => {
-                  if (inputValue.trim()) {
-                    handleAddIngredient(inputValue);
-                  } else {
-                    handleSearchRecipes();
-                  }
-                }}
-                disabled={loading || (ingredients.length === 0 && !inputValue)}
-                className="rounded-end-pill"
-                style={{
-                  backgroundColor: "#008700",
-                  borderColor: "#008700",
-                  padding: "0.5rem 1rem",
-                }}
-              >
-                {loading || validating ? (
-                  <Spinner animation="border" size="sm" />
-                ) : (
-                  <Search size={20} />
-                )}
-              </Button>
-            </InputGroup>
-          </Col>
-        </Row>
-
-        {inputError ? (
-          <p className="text-danger small">{inputError}</p>
-        ) : (
-          <p className="text-muted small">
-            Enter one ingredient at a time. Press Enter to add.
-          </p>
-        )}
-
-        {ingredients.length > 0 && (
-          <div className="my-3">
-            {ingredients.map((i) => (
-              <Badge key={i} pill className="ingredient-badge shadow-sm">
-                {i}
-                <Button
-                  variant="link"
-                  size="sm"
-                  className="remove-btn ms-1"
-                  onClick={() => handleRemoveIngredient(i)}
-                  disabled={loading}
-                >
-                  ×
-                </Button>
-              </Badge>
-            ))}
-          </div>
-        )}
-
-        {recipes.length > 0 && (
-          <div
-            className="recipe-list"
-            style={{
-              backgroundColor: "white",
-              padding: "2rem",
-              borderRadius: "12px",
-            }}
-          >
-            {recipes.map((recipe) => (
+      {/* --- Recipes --- */}
+      <div className="recipe-list">
+        {recipes.length > 0
+          ? recipes.map((recipe) => (
               <RecipeCard
                 key={recipe.id}
                 recipe={recipe}
                 isError={recipe.isError}
               />
-            ))}
-          </div>
-        )}
+            ))
+          : ingredients.length > 0 &&
+            !loading &&
+            !error && (
+              <div className="mt-4">
+                <h4>No recipes found</h4>
+                <p>We couldn't find recipes that match your ingredients.</p>
+                <p>Try removing or changing some ingredients.</p>
+              </div>
+            )}
+      </div>
 
-        {ingredients.length > 0 &&
-          recipes.length === 0 &&
-          !loading &&
-          !error && (
-            <div
-              className="mt-4"
-              style={{
-                backgroundColor: "white",
-                padding: "2rem",
-                borderRadius: "12px",
-              }}
-            >
-              <h4>No recipes found</h4>
-              <p>We couldn't find recipes that match your ingredients.</p>
-              <p>Try removing or changing some ingredients.</p>
-            </div>
-          )}
-
-        <Modal
-          show={showErrorModal}
-          onHide={handleClearError}
-          centered
-          contentClassName="modern-modal"
-        >
-          <Modal.Header closeButton>
-            <Modal.Title>Error</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>{error}</Modal.Body>
-          <Modal.Footer>
-            <Button className="modern-btn" onClick={handleRetry}>
-              Retry
-            </Button>
-            <Button variant="outline-secondary" onClick={handleClearError}>
-              Close
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      </Container>
-    </>
+      {/* --- Error Modal --- */}
+      <Modal
+        show={showErrorModal}
+        onHide={handleClearError}
+        centered
+        contentClassName="modern-modal"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Error</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{error}</Modal.Body>
+        <Modal.Footer>
+          <Button className="modern-btn" onClick={handleRetry}>
+            Retry
+          </Button>
+          <Button variant="outline-secondary" onClick={handleClearError}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </Container>
   );
 }
 
@@ -319,5 +285,4 @@ function App() {
     </div>
   );
 }
-
 export default App;

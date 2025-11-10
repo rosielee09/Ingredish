@@ -350,6 +350,9 @@
 }
 .hero-title {
   color: white;
-  font-size: 4rem;
-  text-shadow: #173700 0px 0px 8px;
+  size: 6rem;
+  text-align: center;
+  margin: 0 auto;
+  position: relative;
+  z-index: 10;
 }

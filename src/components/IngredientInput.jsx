@@ -1,30 +1,28 @@
 import React from "react";
 
-export function IngredientInput({ value, onChange, onAddIngredient }) {
+export function IngredientInput({
+	value,
+	onChange,
+	onAddIngredient,
+	disabled = false,
+}) {
 	const handleKeyDown = (e) => {
 		if (e.key === "Enter") {
 			e.preventDefault();
-			if (value.trim()) onAddIngredient(value.trim());
+			const trimmed = value.trim();
+			if (trimmed) onAddIngredient(trimmed);
 		}
 	};
 
 	return (
-		<div className='ingredient-input-container'>
-			<input
-				type='text'
-				placeholder='Enter ingredient'
-				value={value}
-				onChange={(e) => onChange(e.target.value)}
-				onKeyDown={handleKeyDown}
-			/>
-			<button
-				onClick={() =>
-					value.trim() &&
-					onAddIngredient(value.trim())
-				}
-			>
-				+ Add Ingredient
-			</button>
-		</div>
+		<input
+			type='text'
+			placeholder='Enter ingredient'
+			value={value}
+			onChange={(e) => onChange(e.target.value)}
+			onKeyDown={handleKeyDown}
+			disabled={disabled}
+			aria-label='Ingredient input'
+		/>
 	);
 }

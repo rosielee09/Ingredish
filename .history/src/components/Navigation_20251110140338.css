@@ -1,0 +1,161 @@
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(135deg, #f8fff6 0%, #e8f5e9 100%);
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0, 135, 0, 0.1);
+}
+
+.nav-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  flex-shrink: 0;
+  margin-right: auto;
+}
+
+.logo-link {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.logo-link:hover {
+  transform: scale(1.05);
+}
+
+.logo {
+  height: 60px;
+  width: auto;
+  cursor: pointer;
+  transition: filter 0.3s ease;
+}
+
+.logo:hover {
+  filter: brightness(1.1);
+}
+
+.menu {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.menu li {
+  list-style: none;
+}
+
+.menu a {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #008700;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.03em;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.menu a::after {
+  content: "";
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 2px;
+  background: #ff9800;
+  transition: width 0.3s ease;
+}
+
+.menu a:hover {
+  color: #ff9800;
+  background-color: rgba(255, 152, 0, 0.08);
+}
+
+.menu a:hover::after {
+  width: 60%;
+}
+
+.menu a.active {
+  background: linear-gradient(135deg, #008700, #00a000);
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 135, 0, 0.3);
+}
+
+.menu a.active::after {
+  display: none;
+}
+
+.menu a.active:hover {
+  background: linear-gradient(135deg, #006400, #008700);
+  transform: translateY(-2px);
+}
+
+.nav-icon {
+  font-size: 1.1rem;
+  transition: transform 0.3s ease;
+}
+
+.menu a:hover .nav-icon {
+  transform: scale(1.15) rotate(-5deg);
+}
+
+body {
+  padding-top: 5rem;
+}
+
+@media (max-width: 768px) {
+  .nav-container {
+    padding: 0.6rem 1rem;
+  }
+
+  .logo {
+    height: 50px;
+  }
+
+  .menu {
+    gap: 0.8rem;
+  }
+
+  .menu a {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.85rem;
+  }
+
+  .menu a span {
+    display: none;
+  }
+
+  .nav-icon {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo {
+    height: 45px;
+  }
+
+  .menu a {
+    padding: 0.4rem 0.6rem;
+  }
+
+  .nav-icon {
+    font-size: 1.2rem;
+  }
+}

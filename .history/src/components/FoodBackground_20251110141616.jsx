@@ -2,8 +2,9 @@ import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import Navigation from "./components/Navigation";
 import RecipeCard from "./components/RecipeCard";
-import FoodBackground from "./components/FoodBackground";
+import FoodBackground from "./components/FoodBackground.jsx";
 import Saved from "./saved.jsx";
+import logo from "./assets/Ingredish Logo.png";
 import {
   searchRecipes,
   searchRecipesByIngredient,
@@ -21,7 +22,6 @@ import {
 } from "react-bootstrap";
 import { Search } from "react-bootstrap-icons";
 import "./App.css";
-import logo from "./assets/Ingredish Logo.png";
 
 function Home() {
   const [ingredients, setIngredients] = useState([]);
@@ -159,13 +159,46 @@ function Home() {
 
   return (
     <>
-      <div className="hero">
+      <div
+        style={{
+          position: "relative",
+          height: "400px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          marginBottom: "2rem",
+          overflow: "hidden",
+          background: "transparent",
+        }}
+      >
         <FoodBackground />
-        <img src={logo} alt="Ingredish Logo" className="hero-logo" />
-        <div className="hero-content">
-          <h1 className="hero-title">Welcome to Ingredish!</h1>
-          <p className="hero-sub">
-            Find delicious recipes based on your ingredients
+        <div
+          style={{
+            position: "relative",
+            zIndex: 1,
+            textAlign: "center",
+            color: "white",
+            padding: "2rem",
+            background: "transparent",
+          }}
+        >
+          <h1
+            style={{
+              fontSize: "3.5rem",
+              fontWeight: "bold",
+              marginBottom: "1rem",
+              textShadow: "3px 3px 6px rgba(0,0,0,0.8)",
+            }}
+          >
+            Welcome to Ingredish!
+          </h1>
+          <p
+            style={{
+              fontSize: "1.3rem",
+              textShadow: "2px 2px 4px rgba(0,0,0,0.8)",
+            }}
+          >
+            Transform your ingredients into delicious recipes
           </p>
         </div>
       </div>
@@ -320,4 +353,4 @@ function App() {
   );
 }
 
-export default App;
+export default FoodBackground;

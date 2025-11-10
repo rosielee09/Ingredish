@@ -1,8 +1,15 @@
 #root {
-  max-width: 1280px;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0;
   text-align: center;
+  background-color: transparent;
+}
+
+body {
+  background-color: #f5f5f5;
+  margin: 0;
+  padding: 0;
 }
 
 .ingredient-input-container {
@@ -14,11 +21,10 @@
   margin: 1rem auto;
 }
 
-/* Keep the input and button on one line with a small gap */
 .input-row {
   display: flex;
   align-items: center;
-  gap: 0.6rem; /* space between input and search button */
+  gap: 0.6rem;
   width: 100%;
 }
 
@@ -52,7 +58,6 @@
   border-color: #646cff;
 }
 
-/* Ingredient badges */
 .ingredient-badge {
   display: inline-flex;
   align-items: center;
@@ -74,8 +79,6 @@
   font-weight: 700;
 }
 
-/* Search button next to input */
-
 .search-button {
   padding: 0;
   border-radius: 8px;
@@ -87,7 +90,6 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  /* default desktop size */
   width: 56px;
   height: 56px;
 }
@@ -97,14 +99,12 @@
   cursor: not-allowed;
 }
 
-/* Ensure the svg icon inside the search button is sized consistently */
 .search-button svg,
 .search-button svg * {
   width: 18px !important;
   height: 18px !important;
 }
 
-/* Tablet size */
 @media (max-width: 1024px) {
   .search-button {
     width: 48px;
@@ -112,7 +112,6 @@
   }
 }
 
-/* Mobile / small screens */
 @media (max-width: 420px) {
   .search-button {
     width: 40px;
@@ -125,15 +124,13 @@
   }
 }
 
-/* make input fill remaining space in the input-row */
 .input-row input,
 .input-row .ingredient-input-container input,
 .input-row input[type="text"] {
   flex: 1 1 auto;
-  min-width: 0; /* prevent overflow */
+  min-width: 0;
 }
 
-/* Input-specific error under the input */
 .input-error {
   color: #ffb4b4;
   margin-top: 0.4rem;
@@ -154,14 +151,12 @@
   margin-right: auto;
 }
 
-/* Space between helper text and the ingredient badges */
 .ingredient-badges {
   text-align: center;
   margin-top: 0.75rem;
   margin-bottom: 0.75rem;
 }
 
-/* No-recipes overlay */
 .no-recipes-overlay {
   position: absolute;
   inset: 0;
@@ -178,16 +173,15 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
   z-index: 5;
 }
-/* Recipe list container */
+
 .recipe-list {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* desktop: 3 columns */
+  grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
   padding: 1rem;
-  position: relative; /* so overlays positioned inside */
+  position: relative;
 }
 
-/* Recipe card styling */
 .recipe-list .recipe-card {
   background-color: #1a1a1a;
   padding: 1rem;
@@ -200,10 +194,9 @@
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
-/* Tablet adjustments */
 @media (max-width: 1024px) {
   .recipe-list {
-    grid-template-columns: repeat(2, 1fr); /* tablet: 2 columns */
+    grid-template-columns: repeat(2, 1fr);
   }
   .ingredient-input-container {
     flex-direction: column;
@@ -215,10 +208,9 @@
   }
 }
 
-/* Mobile adjustments */
 @media (max-width: 600px) {
   .recipe-list {
-    grid-template-columns: 1fr; /* mobile: 1 column */
+    grid-template-columns: 1fr;
   }
   .ingredient-input-container {
     flex-direction: column;
@@ -230,7 +222,6 @@
   }
 }
 
-/* Error modal (global) */
 .error-modal {
   position: fixed;
   inset: 0;
@@ -281,10 +272,6 @@
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/* Refresh button (clears inputs) */
-/* Refresh button removed */
-
-/* Modern gradient button style */
 .modern-btn {
   background: rgb(45, 44, 44);
   border: none;
@@ -298,7 +285,6 @@
   box-shadow: 0 4px 12px rgba(100, 100, 255, 0.3);
 }
 
-/* Input group refinement */
 .modern-input input {
   border: 1px solid #ddd !important;
 }
@@ -307,7 +293,6 @@
   border-color: #6a5acd !important;
 }
 
-/* Modern ingredient badge */
 .ingredient-badge {
   background: linear-gradient(135deg, #e0eaff, #f7f8ff);
   color: #333;
@@ -317,7 +302,6 @@
   padding: 8px 12px;
 }
 
-/* Small remove button inside badge */
 .remove-btn {
   color: #666;
   text-decoration: none;
@@ -328,28 +312,13 @@
   color: #000;
 }
 
-/* Modal with soft shadows */
 .modern-modal {
   border-radius: 16px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
 }
 
-/* Title gradient */
 .gradient-text {
   background: linear-gradient(90deg, #48c6ef, #6a5acd);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-}
-.hero-logo {
-  width: 500px;
-  height: auto;
-  display: block;
-  margin: 0 auto;
-  position: relative;
-  z-index: 10;
-}
-.hero-title {
-  color: white;
-  font-size: 4rem;
-  text-shadow: #173700 0px 0px 8px;
 }
