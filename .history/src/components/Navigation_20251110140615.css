@@ -1,0 +1,122 @@
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(135deg, #f8fff6 0%, #e8f5e9 100%);
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0, 135, 0, 0.1);
+}
+
+.custom-navbar {
+  background: linear-gradient(135deg, #f8fff6 0%, #e8f5e9 100%) !important;
+  box-shadow: 0 2px 8px rgba(0, 135, 0, 0.1);
+  padding: 0.5rem 0;
+}
+
+.brand-link {
+  transition: transform 0.3s ease;
+}
+
+.brand-link:hover {
+  transform: scale(1.05);
+}
+
+.logo {
+  height: 60px;
+  width: auto;
+  transition: filter 0.3s ease;
+}
+
+.logo:hover {
+  filter: brightness(1.1);
+}
+
+.nav-link-custom {
+  display: flex !important;
+  align-items: center;
+  gap: 0.5rem;
+  color: #008700 !important;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.03em;
+  padding: 0.6rem 1rem !important;
+  border-radius: 8px;
+  margin: 0 0.25rem;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.nav-link-custom::after {
+  content: "";
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 2px;
+  background: #ff9800;
+  transition: width 0.3s ease;
+}
+
+.nav-link-custom:hover {
+  color: #ff9800 !important;
+  background-color: rgba(255, 152, 0, 0.08);
+}
+
+.nav-link-custom:hover::after {
+  width: 60%;
+}
+
+.nav-link-custom.active {
+  background: linear-gradient(135deg, #008700, #00a000) !important;
+  color: white !important;
+  box-shadow: 0 4px 12px rgba(0, 135, 0, 0.3);
+}
+
+.nav-link-custom.active::after {
+  display: none;
+}
+
+.nav-link-custom.active:hover {
+  background: linear-gradient(135deg, #006400, #008700) !important;
+  transform: translateY(-2px);
+}
+
+.nav-icon {
+  font-size: 1.1rem;
+  transition: transform 0.3s ease;
+}
+
+.nav-link-custom:hover .nav-icon {
+  transform: scale(1.15) rotate(-5deg);
+}
+
+body {
+  padding-top: 5rem;
+}
+
+@media (max-width: 992px) {
+  .logo {
+    height: 50px;
+  }
+
+  .navbar-toggler {
+    border-color: #008700;
+  }
+
+  .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgb(0, 135, 0)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+  }
+
+  .nav-link-custom {
+    margin: 0.25rem 0;
+  }
+}
+
+@media (max-width: 576px) {
+  .logo {
+    height: 45px;
+  }
+}
