@@ -9,24 +9,24 @@ const LS_KEY = "savedRecipes";
 export default function Saved() {
   const [savedRecipes, setSavedRecipes] = useState([]);
 
-  // modal + editing state
-  const [showModal, setShowModal] = useState(false);
+  // index ของการ์ดที่กำลังแก้ไขอยู่
   const [editingIndex, setEditingIndex] = useState(null);
   const [editTitle, setEditTitle] = useState("");
   const [editIngredients, setEditIngredients] = useState("");
   const [editInstructions, setEditInstructions] = useState("");
+  const [showModal, setShowModal] = useState(false);
 
-  // load recipes on mount
+  // โหลดข้อมูลจาก localStorage ครั้งแรก
   useEffect(() => {
     try {
-      const stored = JSON.parse(localStorage.getItem(LS_KEY) || "[]");
-      setSavedRecipes(stored);
+      const saved = JSON.parse(localStorage.getItem(LS_KEY) || "[]");
+      setSavedRecipes(saved);
     } catch {
       setSavedRecipes([]);
     }
   }, []);
 
-  // ---------------- helpers ----------------
+  // ------- helpers สำหรับดึงค่ามาใส่ฟอร์ม -------
 
   function getEditableTitle(recipe) {
     return (
@@ -39,27 +39,25 @@ export default function Saved() {
   }
 
   function getEditableIngredients(recipe) {
-    const value =
-      recipe.customIngredients ||
-      recipe.ingredients ||
-      recipe.ingredientsText ||
-      recipe.ingredientsList ||
-      "";
-
-    return typeof value === "string" ? value : String(value || "");
+    if (recipe.customIngredients) return recipe.customIngredients;
+    if (typeof recipe.ingredients === "string") return recipe.ingredients;
+    if (Array.isArray(recipe.ingredients)) return recipe.ingredients.join(", ");
+    if (Array.isArray(recipe.ingredientsList))
+      return recipe.ingredientsList.join(", ");
+    if (recipe.ingredientsText) return recipe.ingredientsText;
+    return "";
   }
 
   function getEditableInstructions(recipe) {
-    const value =
+    return (
       recipe.customInstructions ||
       recipe.instructions ||
       recipe.strInstructions ||
-      "";
-
-    return typeof value === "string" ? value : String(value || "");
+      ""
+    );
   }
 
-  // ---------------- actions ----------------
+  // ------- กดปุ่ม Edit บนการ์ด -------
 
   function handleStartEdit(index) {
     const recipe = savedRecipes[index];
@@ -72,42 +70,39 @@ export default function Saved() {
     setShowModal(true);
   }
 
+  // ------- กด Cancel หรือปิด modal -------
+
   function handleCancelEdit() {
     setShowModal(false);
     setEditingIndex(null);
   }
 
-  function handleSaveEdit(e) {
-    e.preventDefault();
-    if (editingIndex === null) return;
+  // ------- กด Save changes -------
 
-    const trimmedTitle =
-      typeof editTitle === "string" ? editTitle.trim() : String(editTitle);
-    const trimmedIng =
-      typeof editIngredients === "string"
-        ? editIngredients.trim()
-        : String(editIngredients || "");
-    const trimmedIns =
-      typeof editInstructions === "string"
-        ? editInstructions.trim()
-        : String(editInstructions || "");
+  function handleSaveEdit() {
+    if (editingIndex === null) return;
 
     setSavedRecipes((prev) => {
       const next = [...prev];
       const current = next[editingIndex];
       if (!current) return prev;
 
-      next[editingIndex] = {
+      const trimmedTitle = editTitle.trim();
+      const trimmedIng = editIngredients.trim();
+      const trimmedIns = editInstructions.trim();
+
+      // อัปเดตทุก field ที่เกี่ยวกับชื่อ/ingredients/instructions
+      const updated = {
         ...current,
         customTitle: trimmedTitle,
-        customIngredients: trimmedIng,
-        customInstructions: trimmedIns,
-        // also sync fallback fields
         title: trimmedTitle,
         name: trimmedTitle,
         strMeal: trimmedTitle,
+        customIngredients: trimmedIng,
+        customInstructions: trimmedIns,
       };
 
+      next[editingIndex] = updated;
       localStorage.setItem(LS_KEY, JSON.stringify(next));
       return next;
     });
@@ -115,6 +110,8 @@ export default function Saved() {
     setShowModal(false);
     setEditingIndex(null);
   }
+
+  // ------- ลบ (unsave) การ์ด -------
 
   function handleUnsave(index) {
     setSavedRecipes((prev) => {
@@ -122,11 +119,23 @@ export default function Saved() {
       localStorage.setItem(LS_KEY, JSON.stringify(next));
       return next;
     });
-
-    if (editingIndex === index) setEditingIndex(null);
   }
 
-  // ---------------- render ----------------
+  // ------- ถ้ายังไม่มีสูตรที่เซฟ -------
+
+  if (savedRecipes.length === 0) {
+    return (
+      <div>
+        <Navigation />
+        <div className="container" style={{ padding: "24px" }}>
+          <h2>My Saved Recipes</h2>
+          <p className="text-muted">No saved recipes yet.</p>
+        </div>
+      </div>
+    );
+  }
+
+  // ------- หน้าแสดงการ์ด + modal -------
 
   return (
     <div>
@@ -137,7 +146,7 @@ export default function Saved() {
         <div className="recipe-list" style={{ marginTop: 20 }}>
           {savedRecipes.map((recipe, index) => (
             <RecipeCard
-              key={recipe.strMeal || index}
+              key={recipe.id || recipe.idMeal || index}
               recipe={recipe}
               onUnsave={() => handleUnsave(index)}
               onEdit={() => handleStartEdit(index)}
@@ -145,14 +154,14 @@ export default function Saved() {
           ))}
         </div>
 
-        {/* ---------- EDIT MODAL ---------- */}
-        <Modal centered show={showModal} onHide={handleCancelEdit}>
-          <Form onSubmit={handleSaveEdit}>
-            <Modal.Header closeButton>
-              <Modal.Title>Edit Recipe</Modal.Title>
-            </Modal.Header>
+        {/* Edit Modal */}
+        <Modal show={showModal} onHide={handleCancelEdit} centered>
+          <Modal.Header closeButton>
+            <Modal.Title>Edit recipe</Modal.Title>
+          </Modal.Header>
 
-            <Modal.Body>
+          <Modal.Body>
+            <Form>
               <Form.Group className="mb-3">
                 <Form.Label>Title</Form.Label>
                 <Form.Control
@@ -183,17 +192,17 @@ export default function Saved() {
                   onChange={(e) => setEditInstructions(e.target.value)}
                 />
               </Form.Group>
-            </Modal.Body>
+            </Form>
+          </Modal.Body>
 
-            <Modal.Footer>
-              <Button variant="outline-secondary" onClick={handleCancelEdit}>
-                Cancel
-              </Button>
-              <Button type="submit" variant="success">
-                Save changes
-              </Button>
-            </Modal.Footer>
-          </Form>
+          <Modal.Footer>
+            <Button variant="outline-secondary" onClick={handleCancelEdit}>
+              Cancel
+            </Button>
+            <Button variant="success" onClick={handleSaveEdit}>
+              Save changes
+            </Button>
+          </Modal.Footer>
         </Modal>
       </div>
     </div>

@@ -28,8 +28,8 @@
   font-size: 1rem;
   border-radius: 8px;
   border: 1px solid #444;
-  background-color: #1a1a1a;
-  color: #fff;
+  background-color: #fff;
+  color: #a1a1a1;
 }
 
 .ingredient-input-container input:focus {
@@ -189,9 +189,9 @@
 
 /* Recipe card styling */
 .recipe-list .recipe-card {
+  background-color: #1a1a1a;
   padding: 1rem;
-  border: 0.5px solid lightgrey;
-  border-radius: 16px;
+  border-radius: 12px;
   transition: transform 0.3s, box-shadow 0.3s;
 }
 
