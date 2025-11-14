@@ -3,7 +3,7 @@ import "../App.css";
 
 const LS_KEY = "savedRecipes";
 
-// Helpers for safely reading fields
+// Helpers for safely reading fields from different recipe shapes
 function getTitle(recipe) {
   return (
     recipe.customTitle ||
@@ -55,9 +55,9 @@ function getImageUrl(recipe) {
 export default function RecipeCard({
   recipe,
   isError,
-  onUnsave, // Saved page → parent removes by index
-  isDeleting,
-  onEdit,
+  onUnsave, // used on Saved page → parent handles removing + animation
+  isDeleting, // used on Saved page → add fade-out class
+  onEdit, // optional: open edit panel in Saved page
 }) {
   const [isSaved, setIsSaved] = useState(false);
 
@@ -67,32 +67,34 @@ export default function RecipeCard({
   const instructionsText = getInstructionsText(recipe);
   const imageUrl = getImageUrl(recipe);
 
-  // Check saved status on Home page
+  // Check if this recipe is already saved in localStorage (for the main page)
   useEffect(() => {
     try {
       const stored = JSON.parse(localStorage.getItem(LS_KEY)) || [];
-      const exists = stored.some((r) => r.strMeal === recipe.strMeal);
+      const exists = stored.some((r) => r.id === recipe.id);
       setIsSaved(exists);
     } catch {
       setIsSaved(false);
     }
-  }, [recipe]);
+  }, [recipe?.id]);
 
-  // Handle heart
+  // Handle heart click:
+  // - on Saved page: call onUnsave to remove it
+  // - on Home page: toggle save/unsave directly in localStorage
   function handleHeartClick(e) {
     e.stopPropagation();
 
-    // Saved page → delete by index (no id)
+    // Saved page: parent controls removal + fade-out
     if (onUnsave) {
-      onUnsave(); // ← IMPORTANT: no arguments, parent handles it
+      onUnsave(recipe.id);
       return;
     }
 
-    // Home page save/unsave
+    // Home page: toggle save in localStorage
     const stored = JSON.parse(localStorage.getItem(LS_KEY)) || [];
 
     if (isSaved) {
-      const next = stored.filter((r) => r.strMeal !== recipe.strMeal);
+      const next = stored.filter((r) => r.id !== recipe.id);
       localStorage.setItem(LS_KEY, JSON.stringify(next));
       setIsSaved(false);
     } else {
@@ -102,12 +104,13 @@ export default function RecipeCard({
     }
   }
 
-  // Edit button
+  // Optional: handle Edit button click (Saved page)
   function handleEditClick(e) {
     e.stopPropagation();
     if (onEdit) onEdit();
   }
 
+  // Error state from API
   if (isError) {
     return (
       <div className="recipe-card">
@@ -116,11 +119,13 @@ export default function RecipeCard({
     );
   }
 
+  // Build base className for animation support
   let cardClassName = "recipe-card";
   if (isDeleting) cardClassName += " recipe-card--deleting";
 
   return (
     <div className={cardClassName}>
+      {/* Image + save/unsave heart */}
       {imageUrl && (
         <div className="mb-3 position-relative">
           <img
@@ -146,6 +151,7 @@ export default function RecipeCard({
               borderRadius: "999px",
             }}
           >
+            {/* Filled heart when saved, outline when not */}
             <span
               style={{
                 color: isSaved || onUnsave ? "green" : "#888",
@@ -158,12 +164,23 @@ export default function RecipeCard({
         </div>
       )}
 
-      <h3 style={{ color: "#2e7d32", marginBottom: "0.5rem" }}>{title}</h3>
+      {/* Title & description */}
+      <h3
+        style={{
+          color: "#2e7d32",
+          marginBottom: "0.5rem",
+        }}
+      >
+        {title}
+      </h3>
 
       {description && (
-        <p style={{ marginBottom: "1rem", color: "#555" }}>{description}</p>
+        <p style={{ marginBottom: "1rem", color: "#acacacff" }}>
+          {description}
+        </p>
       )}
 
+      {/* Ingredients */}
       {ingredientsText && (
         <>
           <h5 style={{ color: "#2e7d32" }}>Ingredients:</h5>
@@ -171,6 +188,7 @@ export default function RecipeCard({
         </>
       )}
 
+      {/* Instructions */}
       {instructionsText && (
         <>
           <h5 style={{ color: "#2e7d32" }}>Instructions:</h5>
@@ -178,6 +196,7 @@ export default function RecipeCard({
         </>
       )}
 
+      {/* Edit button (only visible when onEdit is provided → Saved page) */}
       {onEdit && (
         <div className="mt-3 d-flex justify-content-end">
           <button

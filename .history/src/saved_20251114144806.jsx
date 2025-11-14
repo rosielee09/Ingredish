@@ -1,3 +1,4 @@
+// src/saved.jsx
 import React, { useEffect, useState } from "react";
 import Navigation from "./components/Navigation.jsx";
 import RecipeCard from "./components/RecipeCard";
@@ -5,29 +6,30 @@ import { Modal, Button, Form } from "react-bootstrap";
 import "./index.css";
 
 const LS_KEY = "savedRecipes";
+const FADE_MS = 250; // Must match CSS transition duration if you animate
 
 export default function Saved() {
   const [savedRecipes, setSavedRecipes] = useState([]);
+  const [deletingIndexes, setDeletingIndexes] = useState(new Set());
 
-  // modal + editing state
-  const [showModal, setShowModal] = useState(false);
-  const [editingIndex, setEditingIndex] = useState(null);
+  // Editing state
+  const [editingRecipe, setEditingRecipe] = useState(null);
   const [editTitle, setEditTitle] = useState("");
   const [editIngredients, setEditIngredients] = useState("");
   const [editInstructions, setEditInstructions] = useState("");
+  const [showModal, setShowModal] = useState(false);
 
-  // load recipes on mount
+  // Load saved recipes from localStorage when component mounts
   useEffect(() => {
     try {
-      const stored = JSON.parse(localStorage.getItem(LS_KEY) || "[]");
-      setSavedRecipes(stored);
+      const saved = JSON.parse(localStorage.getItem(LS_KEY) || "[]");
+      setSavedRecipes(saved);
     } catch {
       setSavedRecipes([]);
     }
   }, []);
 
-  // ---------------- helpers ----------------
-
+  // Helpers to prepare editable text from recipe object
   function getEditableTitle(recipe) {
     return (
       recipe.customTitle ||
@@ -39,94 +41,93 @@ export default function Saved() {
   }
 
   function getEditableIngredients(recipe) {
-    const value =
-      recipe.customIngredients ||
-      recipe.ingredients ||
-      recipe.ingredientsText ||
-      recipe.ingredientsList ||
-      "";
-
-    return typeof value === "string" ? value : String(value || "");
+    if (recipe.customIngredients) return recipe.customIngredients;
+    if (typeof recipe.ingredients === "string") return recipe.ingredients;
+    if (Array.isArray(recipe.ingredients)) return recipe.ingredients.join(", ");
+    if (Array.isArray(recipe.ingredientsList))
+      return recipe.ingredientsList.join(", ");
+    if (recipe.ingredientsText) return recipe.ingredientsText;
+    return "";
   }
 
   function getEditableInstructions(recipe) {
-    const value =
+    return (
       recipe.customInstructions ||
       recipe.instructions ||
       recipe.strInstructions ||
-      "";
-
-    return typeof value === "string" ? value : String(value || "");
+      ""
+    );
   }
 
-  // ---------------- actions ----------------
-
-  function handleStartEdit(index) {
-    const recipe = savedRecipes[index];
-    if (!recipe) return;
-
-    setEditingIndex(index);
+  // Start editing a specific recipe
+  function handleStartEdit(recipe) {
+    setEditingRecipe(recipe);
     setEditTitle(getEditableTitle(recipe));
     setEditIngredients(getEditableIngredients(recipe));
     setEditInstructions(getEditableInstructions(recipe));
     setShowModal(true);
   }
 
+  // Cancel edit mode
   function handleCancelEdit() {
     setShowModal(false);
-    setEditingIndex(null);
+    setEditingRecipe(null);
   }
 
-  function handleSaveEdit(e) {
-    e.preventDefault();
-    if (editingIndex === null) return;
+  // Save edited recipe back into state + localStorage
+  function handleSaveEdit(event) {
+    event.preventDefault();
+    if (!editingRecipe) return;
 
-    const trimmedTitle =
-      typeof editTitle === "string" ? editTitle.trim() : String(editTitle);
-    const trimmedIng =
-      typeof editIngredients === "string"
-        ? editIngredients.trim()
-        : String(editIngredients || "");
-    const trimmedIns =
-      typeof editInstructions === "string"
-        ? editInstructions.trim()
-        : String(editInstructions || "");
+    const updated = {
+      ...editingRecipe,
+      customTitle: editTitle.trim(),
+      customIngredients: editIngredients.trim(),
+      customInstructions: editInstructions.trim(),
+    };
 
     setSavedRecipes((prev) => {
-      const next = [...prev];
-      const current = next[editingIndex];
-      if (!current) return prev;
-
-      next[editingIndex] = {
-        ...current,
-        customTitle: trimmedTitle,
-        customIngredients: trimmedIng,
-        customInstructions: trimmedIns,
-        // also sync fallback fields
-        title: trimmedTitle,
-        name: trimmedTitle,
-        strMeal: trimmedTitle,
-      };
-
+      // Replace the exact object we were editing
+      const next = prev.map((r) => (r === editingRecipe ? updated : r));
       localStorage.setItem(LS_KEY, JSON.stringify(next));
       return next;
     });
 
     setShowModal(false);
-    setEditingIndex(null);
+    setEditingRecipe(null);
   }
 
+  // Unsave with fade-out by index
   function handleUnsave(index) {
-    setSavedRecipes((prev) => {
-      const next = prev.filter((_, i) => i !== index);
-      localStorage.setItem(LS_KEY, JSON.stringify(next));
-      return next;
-    });
+    setDeletingIndexes((prev) => new Set(prev).add(index));
 
-    if (editingIndex === index) setEditingIndex(null);
+    setTimeout(() => {
+      setSavedRecipes((prev) => {
+        const next = prev.filter((_, i) => i !== index);
+        localStorage.setItem(LS_KEY, JSON.stringify(next));
+        return next;
+      });
+
+      setDeletingIndexes((prev) => {
+        const next = new Set(prev);
+        next.delete(index);
+        return next;
+      });
+    }, FADE_MS);
   }
 
-  // ---------------- render ----------------
+  // Empty state
+  if (savedRecipes.length === 0) {
+    return (
+      <div>
+        <Navigation />
+        <div className="container" style={{ padding: "24px" }}>
+          <h2>My Saved Recipes</h2>
+          <p className="text-muted">No saved recipes yet.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -137,21 +138,21 @@ export default function Saved() {
         <div className="recipe-list" style={{ marginTop: 20 }}>
           {savedRecipes.map((recipe, index) => (
             <RecipeCard
-              key={recipe.strMeal || index}
+              key={recipe.id || recipe.idMeal || index}
               recipe={recipe}
               onUnsave={() => handleUnsave(index)}
-              onEdit={() => handleStartEdit(index)}
+              isDeleting={deletingIndexes.has(index)}
+              onEdit={() => handleStartEdit(recipe)}
             />
           ))}
         </div>
 
-        {/* ---------- EDIT MODAL ---------- */}
-        <Modal centered show={showModal} onHide={handleCancelEdit}>
+        {/* Edit Modal */}
+        <Modal show={showModal} onHide={handleCancelEdit} centered>
           <Form onSubmit={handleSaveEdit}>
             <Modal.Header closeButton>
-              <Modal.Title>Edit Recipe</Modal.Title>
+              <Modal.Title>Edit recipe</Modal.Title>
             </Modal.Header>
-
             <Modal.Body>
               <Form.Group className="mb-3">
                 <Form.Label>Title</Form.Label>
@@ -184,7 +185,6 @@ export default function Saved() {
                 />
               </Form.Group>
             </Modal.Body>
-
             <Modal.Footer>
               <Button variant="outline-secondary" onClick={handleCancelEdit}>
                 Cancel
