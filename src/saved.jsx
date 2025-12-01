@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Navigation from "./components/Navigation.jsx";
 import RecipeCard from "./components/RecipeCard";
 import { Modal, Button, Form } from "react-bootstrap";
@@ -7,6 +8,7 @@ import "./index.css";
 const LS_KEY = "savedRecipes";
 
 export default function Saved() {
+  const navigate = useNavigate();
   const [savedRecipes, setSavedRecipes] = useState([]);
 
   // modal + editing state
@@ -132,7 +134,12 @@ export default function Saved() {
     <div>
       <Navigation />
       <div className="container" style={{ padding: "24px" }}>
-        <h2>My Saved Recipes</h2>
+        <div className="d-flex justify-content-between align-items-center">
+          <h2>My Saved Recipes</h2>
+          <Button variant="primary" onClick={() => navigate("/create")}>
+            Create new Recipe
+          </Button>
+        </div>
 
         <div className="recipe-list" style={{ marginTop: 20 }}>
           {savedRecipes.map((recipe, index) => (

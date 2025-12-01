@@ -4,10 +4,24 @@ import Navigation from "./components/Navigation";
 import RecipeCard from "./components/RecipeCard";
 import FoodBackground from "./components/FoodBackground";
 import Saved from "./saved.jsx";
+import CreateRecipe from "./CreateRecipe.jsx";
 import {
   searchRecipes,
   searchRecipesByIngredient,
 } from "./lib/recipe-generator";
+~
+function App() {
+  return (
+    <div>
+      <Navigation />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/saved" element={<Saved />} />
+        <Route path="/create" element={<CreateRecipe />} />
+      </Routes>
+    </div>
+  );
+}
 import {
   Container,
   Form,
