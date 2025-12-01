@@ -134,12 +134,7 @@ export default function Saved() {
     <div>
       <Navigation />
       <div className="container" style={{ padding: "24px" }}>
-        <div className="d-flex justify-content-between align-items-center">
-          <h2>My Saved Recipes</h2>
-          <Button variant="primary" onClick={() => navigate("/create")}>
-            Create new Recipe
-          </Button>
-        </div>
+        <h2>My Saved Recipes</h2>
 
         <div className="recipe-list" style={{ marginTop: 20 }}>
           {savedRecipes.map((recipe, index) => (

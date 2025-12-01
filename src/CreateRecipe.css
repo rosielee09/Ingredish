@@ -1,0 +1,26 @@
+.create-recipe-container {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.create-recipe-card {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  border: 1px solid #eee;
+  max-width: 800px;
+  width: 100%;
+}
+
+.image-preview {
+  width: 100%;
+  border-radius: 12px;
+  object-fit: cover;
+  aspect-ratio: 16 / 9;
+  margin-bottom: 1rem;
+  border: 1px dashed #ccc;
+  padding: 0.5rem;
+  background-color: #f9f9f9;
+}
