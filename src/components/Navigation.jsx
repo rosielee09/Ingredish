@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { Navbar, Nav, Container } from "react-bootstrap";
-import { House, BookmarkHeart } from "react-bootstrap-icons";
+import { House, BookmarkHeart, PencilSquare } from "react-bootstrap-icons";
 import "./Navigation.css";
 import logo from "../assets/Ingredish Logo.png";
 
@@ -37,6 +37,16 @@ export default function Navigation() {
             >
               <BookmarkHeart className="nav-icon" />
               <span>Saved Recipes</span>
+            </Nav.Link>
+            <Nav.Link
+              as={Link}
+              to="/create"
+              className={`nav-link-custom ${
+                location.pathname === "/create" ? "active" : ""
+              }`}
+            >
+              <PencilSquare className="nav-icon" />
+              <span>Create Own Recipe</span>
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>
