@@ -9,19 +9,6 @@ import {
   searchRecipes,
   searchRecipesByIngredient,
 } from "./lib/recipe-generator";
-~
-function App() {
-  return (
-    <div>
-      <Navigation />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/saved" element={<Saved />} />
-        <Route path="/create" element={<CreateRecipe />} />
-      </Routes>
-    </div>
-  );
-}
 import {
   Container,
   Form,
@@ -329,6 +316,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/saved" element={<Saved />} />
+        <Route path="/create" element={<CreateRecipe />} />
       </Routes>
     </div>
   );

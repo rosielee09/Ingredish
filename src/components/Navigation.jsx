@@ -30,16 +30,6 @@ export default function Navigation() {
             </Nav.Link>
             <Nav.Link
               as={Link}
-              to="/create"
-              className={`nav-link-custom ${
-                location.pathname === "/create" ? "active" : ""
-              }`}
-            >
-              <PlusSquare className="nav-icon" />
-              <span>Create Recipe</span>
-            </Nav.Link>
-            <Nav.Link
-              as={Link}
               to="/saved"
               className={`nav-link-custom ${
                 location.pathname === "/saved" ? "active" : ""
@@ -47,6 +37,16 @@ export default function Navigation() {
             >
               <BookmarkHeart className="nav-icon" />
               <span>Saved Recipes</span>
+            </Nav.Link>
+            <Nav.Link
+              as={Link}
+              to="/create"
+              className={`nav-link-custom ${
+                location.pathname === "/create" ? "active" : ""
+              }`}
+            >
+              <PlusSquare className="nav-icon" />
+              <span>Create Recipe</span>
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>
