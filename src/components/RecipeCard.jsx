@@ -161,9 +161,15 @@ function RecipeCard({ recipe, isError = false, onUnsave, isDeleting = false }) {
         </Card.Subtitle>
         {Array.isArray(recipe.instructions) &&
         recipe.instructions.length > 0 ? (
-          <ol style={{ width: "100%", paddingLeft: "20px" }}>
+          <ol style={{ width: "100%", paddingLeft: "20px", textAlign: "left" }}>
             {recipe.instructions.map((step, idx) => (
-              <li key={idx} style={{ color: "#333", marginBottom: "5px" }}>
+              <li
+                key={idx}
+                style={{
+                  color: "#333",
+                  marginBottom: "5px",
+                }}
+              >
                 {step}
               </li>
             ))}
